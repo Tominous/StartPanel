@@ -112,10 +112,10 @@
             if (!$ssh->login($nodeInfo->username, $nodeInfo->password)) {
                 die('Login failed.');
             }
-            //$ssh->setTimeout(0.5);
+            $ssh->setTimeout(0.5);
             $out = $ssh->exec('docker exec server'.$id.' mc_status');
             if (strpos($out, "RUNNING") !== false) {
-            //if (true) {
+            if (true) {
                 return true;
             } else {
                 return false;
@@ -159,7 +159,7 @@
             $cmd_minRam = $this->settings->getSetting('minRam');
             $cmd_maxRam = $this->getMaxRAM($cmd_serverID);
             $ssh->exec('mkdir /var/servers/server'.$cmd_serverID.';wget https://s3.amazonaws.com/Minecraft.Download/versions/1.12.2/minecraft_server.1.12.2.jar -O /var/servers/server'.$cmd_serverID.'/spigot-latest.jar');
-            //$ssh->exec('docker pull nimmis/spigot');
+            $ssh->exec('docker pull nimmis/spigot');
             $ssh->exec("docker run -d -p $cmd_port:25565 --name server$cmd_serverID -v /var/servers/server$cmd_serverID:/minecraft -e MC_MINMEM=".$cmd_minRam."m -e MC_MAXMEM=".$cmd_maxRam."m -e EULA=true nimmis/spigot");
             return true;
         }
